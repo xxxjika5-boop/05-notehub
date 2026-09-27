@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { QueryClient, QueryClientProvider, useQuery, } from "@tanstack/react-query";
+import { useQuery, } from "@tanstack/react-query";
 import { useDebouncedCallback } from "use-debounce";
 
 import NoteList from "../NoteList/NoteList";
@@ -11,7 +11,6 @@ import Pagination from "../Pagination/Pagination";
 import { fetchNotes } from "../../services/noteService";
 import css from "./App.module.css";
 
-const queryClient = new QueryClient();
 
 const AppContent: React.FC = () => {
   const [page, setPage] = useState<number>(1);
@@ -70,10 +69,7 @@ const AppContent: React.FC = () => {
   );
 };
 
-const App: React.FC = () => (
-  <QueryClientProvider client={queryClient}>
-    <AppContent />
-  </QueryClientProvider>
-);
+const App: React.FC = () => <AppContent />;
+
 
 export default App;
