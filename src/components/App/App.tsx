@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { QueryClient, QueryClientProvider, useQuery, useMutation, } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider, useQuery, } from "@tanstack/react-query";
 import { useDebouncedCallback } from "use-debounce";
 
 import NoteList from "../NoteList/NoteList";
@@ -8,7 +8,7 @@ import Modal from "../Modal/Modal";
 import NoteForm from "../NoteForm/NoteForm";
 import Pagination from "../Pagination/Pagination";
 
-import { fetchNotes, deleteNote } from "../../services/noteService";
+import { fetchNotes } from "../../services/noteService";
 import css from "./App.module.css";
 
 const queryClient = new QueryClient();
@@ -36,12 +36,6 @@ const AppContent: React.FC = () => {
     placeholderData: (prev) => prev,
   });
 
-  const deleteMutation = useMutation({
-    mutationFn: (id: string) => deleteNote(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["notes"] });
-    },
-  });
 
   const totalPages = data?.totalPages ?? 1;
 
@@ -64,10 +58,7 @@ const AppContent: React.FC = () => {
       </header>
 
       {!isLoading && !isError && data && (
-        <NoteList
-          notes={data.notes}
-          onDelete={(id) => deleteMutation.mutate(id)}
-        />
+        <NoteList notes={data.notes} />
       )}
 
       {isModalOpen && (
